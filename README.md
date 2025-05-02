@@ -3,7 +3,7 @@
 ## 1. Create a `.env` File
 In the root of your project, create a `.env` file to store your MySQL database credentials:
 ```
-DB_NAME=testdb
+DB_NAME=segwise
 DB_USER=root
 DB_PASSWORD=YourPasswordHere
 DB_HOST=127.0.0.1
