@@ -1,3 +1,23 @@
+#Project Structure
+```bash
+webhook_service/
+│
+├── app/
+│   ├── webhook/              # Django app
+│   ├── webhook_service/      # Django project
+│   ├── manage.py
+│   └── requirements.txt
+│
+├── docker/
+│   ├── celery/
+│   │   └── worker_entrypoint.sh
+│   └── django/
+│       └── entrypoint.sh
+│
+├── docker-compose.yml
+├── Dockerfile
+└── .env
+```
 # Database Connection Setup
 
 ## 1. Create a `.env` File
@@ -28,3 +48,23 @@ DATABASES = {
 }
 ```
 
+#Project Structure
+```bash
+webhook_service/
+│
+├── app/
+│   ├── webhook/              # Django app
+│   ├── webhook_service/      # Django project
+│   ├── manage.py
+│   └── requirements.txt
+│
+├── docker/
+│   ├── celery/
+│   │   └── worker_entrypoint.sh
+│   └── django/
+│       └── entrypoint.sh
+│
+├── docker-compose.yml
+├── Dockerfile
+└── .env
+```
