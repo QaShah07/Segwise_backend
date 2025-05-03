@@ -4,33 +4,40 @@ services:
   web:
     build: .
     volumes:
-      - ./app:/app
+      - ./app:/app  # Mount application code to the container
     ports:
-      - "8000:8000"
-    env_file: .env
+      - "8000:8000"  # Expose port 8000 for the Django app
+    env_file: .env  # Use environment variables from the .env file
     depends_on:
-      - db
-      - redis
+      - db  # Ensure db (MySQL) is ready
+      - redis  # Ensure Redis is ready
 
   worker:
     build: .
-    command: sh docker/celery/worker_entrypoint.sh
+    command: sh docker/celery/worker_entrypoint.sh  # Start Celery worker (adjust path as needed)
     volumes:
-      - ./app:/app
+      - ./app:/app  # Mount application code to the container
     depends_on:
-      - db
-      - redis
-    env_file: .env
+      - db  # Ensure db (MySQL) is ready
+      - redis  # Ensure Redis is ready
+    env_file: .env  # Use environment variables from the .env file
 
   redis:
-    image: redis:7
+    image: redis:7  # Use the Redis image
+    ports:
+      - "6379:6379"  # Expose Redis on port 6379
 
   db:
-    image: mysql:8.0
+    image: mysql:8.0  # MySQL 8.0
     environment:
-      MYSQL_DATABASE: webhookdb
-      MYSQL_USER: webhookuser
-      MYSQL_PASSWORD: webhookpass
-      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}  # Set the root password
     ports:
-      - "3306:3306"
+      - "3306:3306"  # Expose MySQL on port 3306
+    volumes:
+      - mysql_data:/var/lib/mysql  # Persist MySQL data
+
+volumes:
+  mysql_data:  # Define a volume for persistent MySQL data
