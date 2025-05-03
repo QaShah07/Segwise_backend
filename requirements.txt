@@ -7,3 +7,4 @@ python-dotenv
 mysqlclient
 python-decouple
 django-redis
+requests
