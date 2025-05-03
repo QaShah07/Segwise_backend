@@ -16,3 +16,7 @@ ENV/
 
 # VSCode
 .vscode/
+
+# Docker
+*.pid
+docker-compose.override.yml

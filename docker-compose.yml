@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    volumes:
+      - ./app:/app
+    ports:
+      - "8000:8000"
+    env_file: .env
+    depends_on:
+      - db
+      - redis
+
+  worker:
+    build: .
+    command: sh docker/celery/worker_entrypoint.sh
+    volumes:
+      - ./app:/app
+    depends_on:
+      - db
+      - redis
+    env_file: .env
+
+  redis:
+    image: redis:7
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: webhookdb
+      MYSQL_USER: webhookuser
+      MYSQL_PASSWORD: webhookpass
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3306:3306"
