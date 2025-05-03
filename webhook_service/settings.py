@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+import os
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -86,6 +88,18 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': os.getenv('REDIS_URL', 'redis://redis:6379/0'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+# convenience helper
+from django.core.cache import cache
 
 
 
