@@ -7,10 +7,6 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         fields = ['id', 'target_url', 'secret', 'event_types', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
-    def validate_target_url(self, value):
-        # DRF URLField already validates URL format
-        return value
-
     def validate_event_types(self, value):
         if not isinstance(value, list):
             raise serializers.ValidationError("event_types must be a list of strings.")
