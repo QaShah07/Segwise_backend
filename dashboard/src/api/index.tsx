@@ -12,14 +12,15 @@ export const useCreateSubscription = () => {
     { onSuccess: () => qc.invalidateQueries('subs') }
   );
 };
+
 // Event status
 export const useEventStatus = (eventId: string) =>
-    useQuery(['event', eventId], () => api.get(`/events/${eventId}/status/`).then(res => res.data));
-  
-  // Attempts
-  export const useAttempts = (subId: string, page = 1) =>
-    useQuery(['attempts', subId, page], () =>
-      api.get(`/subscriptions/${subId}/attempts/?limit=20&page=${page}`).then(res => res.data)
-    );
-  
-  export default api;
+  useQuery(['event', eventId], () => api.get(`/events/${eventId}/status/`).then(res => res.data));
+
+// Attempts
+export const useAttempts = (subId: string, page = 1) =>
+  useQuery(['attempts', subId, page], () =>
+    api.get(`/subscriptions/${subId}/attempts/?limit=20&page=${page}`).then(res => res.data)
+  );
+
+export default api;
