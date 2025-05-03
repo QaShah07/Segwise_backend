@@ -100,6 +100,11 @@ CACHES = {
 
 # convenience helper
 from django.core.cache import cache
+# Celery broker & backend
+CELERY_BROKER_URL = os.getenv('REDIS_URL')
+CELERY_RESULT_BACKEND = os.getenv('REDIS_URL')
+# Optional: task result expires
+CELERY_TASK_RESULT_EXPIRES = 3600
 
 
 
