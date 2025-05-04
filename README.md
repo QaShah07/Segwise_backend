@@ -44,7 +44,7 @@ dashboard/src/
 ```
 ## Important Note:
 - To **run locally with Docker**, simply remove the comment on the Docker-related lines in the configuration file and comment out the lines for **Render deployment**.
-- For **Render deployment**, comment out the Docker-related lines and uncomment the lines for Render.
+- For **Render deployment**, comment out the Docker-related lines and uncomment the lines for Renders.
 
 ##  Clone Instructions
 
