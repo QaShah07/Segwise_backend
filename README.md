@@ -31,7 +31,7 @@ dashboard/src/
 └── App.tsx     
 ```
 ---
-## 🖥️ Clone Instructions
+##  Clone Instructions
 
 To clone this repository to your local machine, follow these steps:
 
