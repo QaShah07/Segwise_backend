@@ -42,6 +42,10 @@ dashboard/src/
 ├── pages/
 └── App.tsx     
 ```
+## Important Note:
+- To **run locally with Docker**, simply remove the comment on the Docker-related lines in the configuration file and comment out the lines for **Render deployment**.
+- For **Render deployment**, comment out the Docker-related lines and uncomment the lines for Render.
+
 ##  Clone Instructions
 
 To clone this repository to your local machine, follow these steps:
