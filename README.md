@@ -4,7 +4,7 @@ A Django-based webhook management platform with subscription support, async deli
 
 ##  Deployment
 
-The application is deployed and accessible at: [Live Demo](https://your-deployment-url.com)
+The application is deployed and accessible at: [Live Demo](https://segwise-backend-4.onrender.com)
 
 You can use the live link to test the frontend and backend without local setup.
 
