@@ -16,16 +16,19 @@ RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install gunicorn
 
-# Copy project source
+# Copy project source (includes entrypoint scripts)
 COPY . .
 
 # Make entrypoints executable
-RUN chmod +x docker/django/entrypoint.sh \
-    && chmod +x docker/celery/worker_entrypoint.sh \
-    && chmod +x docker/celery/beat_entrypoint.sh
+RUN chmod +x /app/docker/django/entrypoint.sh \
+    && chmod +x /app/docker/celery/worker_entrypoint.sh \
+    && chmod +x /app/docker/celery/beat_entrypoint.sh
 
 # Default entrypoint triggers Django entrypoint script
-ENTRYPOINT ["sh", "docker/django/entrypoint.sh"]
+ENTRYPOINT ["sh", "/app/docker/django/entrypoint.sh"]
+
+
+
 # original for Docker coompose runnig
 # # Base image
 # FROM python:3.11-slim
