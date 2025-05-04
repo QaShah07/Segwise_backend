@@ -122,7 +122,9 @@ npm start
 ### Run the app
 From the root project directory:
 ```bash
-docker-compose up --build
+docker-compose build --no-cache
+docker-compose up
+
 ```
 ### To stop the containers:
 ```

@@ -1,50 +1,72 @@
-version: '3.9'
-
+# Remove top-level version: key (Compose v2+ ignores it)
 services:
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword         # root password for container init
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+      interval: 10s
+      retries: 5
+
+  redis:
+    image: redis:7
+    # macOS Docker Desktop does not support sysctls in compose; remove sysctls block
+    # If you need vm.overcommit_memory=1, set it on the host VM or run container in privileged mode
+    ports:
+      - "6379:6379"
+
   web:
     build: .
-    command: sh docker/django/entrypoint.sh
+    # run migrations once then launch gunicorn in this container
+    entrypoint: ["sh", "-c", "python manage.py migrate && exec gunicorn webhook_service.wsgi:application --bind 0.0.0.0:8000"]
     volumes:
-      - ./app:/app
+      - .:/app
+    working_dir: /app
     ports:
       - "8000:8000"
     env_file: .env
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   worker:
+    # for workers don’t run migrations, only start celery
     build: .
-    command: sh docker/celery/worker_entrypoint.sh
+    command: celery -A webhook_service worker --loglevel=info
     volumes:
-      - ./app:/app
+      - .:/app
+    working_dir: /app
     env_file: .env
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   beat:
     build: .
-    command: sh docker/celery/beat_entrypoint.sh
+    command: celery -A webhook_service beat --loglevel=info
     volumes:
-      - ./app:/app
+      - .:/app
+    working_dir: /app
     env_file: .env
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
-  redis:
-    image: redis:7
-    ports:
-      - "6379:6379"
-
-  db:
-    image: mysql:8.0
-    environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: rootpassword
-    ports:
-      - "3306:3306"
-    command: --default-authentication-plugin=mysql_native_password
+volumes:
+  db_data:
