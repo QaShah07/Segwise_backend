@@ -1,4 +1,5 @@
-# for render deployment
+# UNCOMMENT THIS CODE FOR RENDER DEPLOYMENT 
+
 # Base image
 FROM python:3.11-slim
 
@@ -29,7 +30,7 @@ CMD ["gunicorn", "webhook_service.wsgi:application", "--bind", "0.0.0.0:8000"]
 
 
 
-# original for Docker coompose runnig
+# UNCOMMENT THIS CODE FOR DOCKER LOCAL DEPLOYMENT 
 # # Base image
 # FROM python:3.11-slim
 

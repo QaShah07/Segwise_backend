@@ -43,6 +43,7 @@ dashboard/src/
 └── App.tsx     
 ```
 ## Important Note:
+Do the following for the ``` .env```,``` Dockerfile```,``` docker-compose.yml ```
 - To **run locally with Docker**, simply remove the comment on the Docker-related lines in the configuration file and comment out the lines for **Render deployment**.
 - For **Render deployment**, comment out the Docker-related lines and uncomment the lines for Renders.
 
