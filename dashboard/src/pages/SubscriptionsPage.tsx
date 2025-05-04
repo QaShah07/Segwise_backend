@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSubscriptions, useCreateSubscription } from '../api';
 import SubscriptionForm from '../components/SubscriptionForm';
 

@@ -1,7 +1,18 @@
+# Webhook Delivery System Assignment
+
+A Django-based webhook management platform with subscription support, async delivery via Celery, retry/backoff logic, Redis caching, and a minimal React dashboard. Easily test, monitor, and scale webhook events across client targets.
+
+##  Deployment
+
+The application is deployed and accessible at: [Live Demo](https://your-deployment-url.com)
+
+You can use the live link to test the frontend and backend without local setup.
+
 ##  Tech Stack
 - **Backend:** Django, celery, Redish
 - **Frontend:** ReactJS, react axios
 - **Containerization:** Docker, Docker Compose
+
 ## Project Structure
 ```bash
 webhook_service/
@@ -31,7 +42,6 @@ dashboard/src/
 ├── pages/
 └── App.tsx     
 ```
----
 ##  Clone Instructions
 
 To clone this repository to your local machine, follow these steps:
@@ -39,13 +49,13 @@ To clone this repository to your local machine, follow these steps:
 1. Open your terminal
 2. Run the following command:
 
-   ```bash
-    git clone https://github.com/QaShah07/Segwise_backend.git
-    ```
+```bash
+ git clone https://github.com/QaShah07/Segwise_backend.git
+ ```
 3. Navigate to the project directory:
-    ```
-    cd Segwise_backend
-    ```
+ ```
+ cd Segwise_backend
+ ```
 ## Option 1️⃣: Docker Setup
 ###  Prerequisites
 - [Docker](https://docs.docker.com/get-docker/) installed
@@ -212,14 +222,6 @@ Our schema is optimized for write-heavy ingestion and read-heavy status queries:
    * **Index on `attempted_at`** enables scheduled cleanup of logs older than 72 hours.
 
 Together, these indexes ensure quick lookups for API queries (e.g., status pages) while minimizing write contention during high-volume ingestion.
-##  Deployment
-
-The application is deployed and accessible at:
-
-👉 [Live Demo](https://your-deployment-url.com)
-
-You can use the live link to test the frontend and backend without local setup.
-
 
 ##  Cost Estimate (Monthly)
 
@@ -244,3 +246,4 @@ You can use the live link to test the frontend and backend without local setup.
 
 * **StackOverflow & Official Docs:** Problem-solving and best-practice references.
 * **ChatGPT (OpenAI):** Assisted in architecture planning, documentation drafting, and code examples.
+* **Postman :** Used for API testing for the project.
