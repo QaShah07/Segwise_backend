@@ -16,16 +16,16 @@ RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install gunicorn
 
-# Copy project source (includes entrypoint scripts)
+# Copy project source
 COPY . .
 
-# Make entrypoints executable
-RUN chmod +x /app/docker/django/entrypoint.sh \
-    && chmod +x /app/docker/celery/worker_entrypoint.sh \
-    && chmod +x /app/docker/celery/beat_entrypoint.sh
+# If you do have entrypoint scripts in docker/..., you can still chmod them safely:
+# RUN [ -f docker/django/entrypoint.sh ] && chmod +x docker/django/entrypoint.sh || echo "no django entrypoint" 
+# (repeat for celery scripts)
 
-# Default entrypoint triggers Django entrypoint script
-ENTRYPOINT ["sh", "/app/docker/django/entrypoint.sh"]
+# (No ENTRYPOINT — we’ll directly CMD into gunicorn)
+CMD ["gunicorn", "webhook_service.wsgi:application", "--bind", "0.0.0.0:8000"]
+
 
 
 
