@@ -1,11 +1,12 @@
-# UNCOMMENT THIS CODE FOR RENDER DEPLOYMENT 
-
+# UNCOMMENT THIS CODE FOR DOCKER LOCAL DEPLOYMENT 
+# Remove top-level version: key (Compose v2+ ignores it)
 services:
+
   db:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: rootpassword         # root password for container init
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
@@ -20,13 +21,15 @@ services:
 
   redis:
     image: redis:7
+    # macOS Docker Desktop does not support sysctls in compose; remove sysctls block
+    # If you need vm.overcommit_memory=1, set it on the host VM or run container in privileged mode
     ports:
       - "6379:6379"
 
   web:
     build: .
-    entrypoint: >
-      sh -c "python manage.py migrate && python manage.py collectstatic --noinput && exec gunicorn webhook_service.wsgi:application --bind 0.0.0.0:$PORT"
+    # run migrations once then launch gunicorn in this container
+    entrypoint: ["sh", "-c", "python manage.py migrate && exec gunicorn webhook_service.wsgi:application --bind 0.0.0.0:8000"]
     volumes:
       - .:/app
     working_dir: /app
@@ -40,6 +43,7 @@ services:
         condition: service_started
 
   worker:
+    # for workers don’t run migrations, only start celery
     build: .
     command: celery -A webhook_service worker --loglevel=info
     volumes:
@@ -66,16 +70,21 @@ services:
         condition: service_started
 
 volumes:
+  db_data:
 
-# UNCOMMENT THIS CODE FOR DOCKER LOCAL DEPLOYMENT 
-# # Remove top-level version: key (Compose v2+ ignores it)
+
+
+
+
+
+# # UNCOMMENT THIS CODE FOR RENDER DEPLOYMENT 
+
 # services:
-
 #   db:
 #     image: mysql:8.0
 #     restart: always
 #     environment:
-#       MYSQL_ROOT_PASSWORD: rootpassword         # root password for container init
+#       MYSQL_ROOT_PASSWORD: rootpassword
 #       MYSQL_DATABASE: ${DB_NAME}
 #       MYSQL_USER: ${DB_USER}
 #       MYSQL_PASSWORD: ${DB_PASSWORD}
@@ -90,15 +99,13 @@ volumes:
 
 #   redis:
 #     image: redis:7
-#     # macOS Docker Desktop does not support sysctls in compose; remove sysctls block
-#     # If you need vm.overcommit_memory=1, set it on the host VM or run container in privileged mode
 #     ports:
 #       - "6379:6379"
 
 #   web:
 #     build: .
-#     # run migrations once then launch gunicorn in this container
-#     entrypoint: ["sh", "-c", "python manage.py migrate && exec gunicorn webhook_service.wsgi:application --bind 0.0.0.0:8000"]
+#     entrypoint: >
+#       sh -c "python manage.py migrate && python manage.py collectstatic --noinput && exec gunicorn webhook_service.wsgi:application --bind 0.0.0.0:$PORT"
 #     volumes:
 #       - .:/app
 #     working_dir: /app
@@ -112,7 +119,6 @@ volumes:
 #         condition: service_started
 
 #   worker:
-#     # for workers don’t run migrations, only start celery
 #     build: .
 #     command: celery -A webhook_service worker --loglevel=info
 #     volumes:
@@ -139,4 +145,6 @@ volumes:
 #         condition: service_started
 
 # volumes:
-#   db_data:
+
+
+
