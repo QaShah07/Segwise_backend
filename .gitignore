@@ -5,11 +5,11 @@ __pycache__/
 
 # Virtual environment
 venv/
-# env/
-# ENV/
+env/
+ENV/
 
 # Environment variables
-# .env
+.env
 
 # macOS
 .DS_Store
